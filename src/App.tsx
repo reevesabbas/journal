@@ -1,9 +1,19 @@
+import "reflect-metadata";
 import { StyleSheet, Text, View } from 'react-native';
+import { useEffect } from "react";
+
+import { AppDataSource } from "./typeorm/data-source";
 
 export default function App() {
+
+  useEffect(() => {
+  }, [])
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+      <Text>
+        Hello
+      </Text>
     </View>
   );
 }
