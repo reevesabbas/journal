@@ -1,8 +1,10 @@
 import "reflect-metadata";
 import { StyleSheet, Text, View } from 'react-native';
+import { ThemeProvider } from 'styled-components'
 import { useEffect } from "react";
 
 import { AppDataSource } from "./typeorm/data-source";
+import theme from "./theme";
 
 export default function App() {
 
@@ -10,19 +12,10 @@ export default function App() {
   }, [])
 
   return (
-    <View style={styles.container}>
-      <Text>
-        Hello
-      </Text>
+    <View style={{flex: 1}}>
+      <ThemeProvider theme={theme}>
+        
+      </ThemeProvider>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
