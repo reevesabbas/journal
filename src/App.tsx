@@ -1,21 +1,19 @@
 import "reflect-metadata";
 import { StyleSheet, Text, View } from 'react-native';
-import { ThemeProvider } from 'styled-components'
 import { useEffect } from "react";
 
 import { AppDataSource } from "./typeorm/data-source";
-import theme from "./theme";
+import { Home } from "./screens/Home";
+import { NavigatorStack } from "./screens";
+import { useDeviceContext } from "twrnc";
+import tw from "../tailwind";
 
 export default function App() {
-
-  useEffect(() => {
-  }, [])
+  useDeviceContext(tw)
 
   return (
-    <View style={{flex: 1}}>
-      <ThemeProvider theme={theme}>
-        
-      </ThemeProvider>
+    <View style={tw`flex-1`}>
+      <NavigatorStack />
     </View>
   );
 }
