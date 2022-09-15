@@ -8,11 +8,14 @@ interface UserInputProps {
   children?: React.ReactNode;
   title?: string;
   email?: boolean;
-  placeholder?: string;
   secure?: boolean;
+  placeholder?: string;
+  onBlur?: (param?: any) => void;
+  onChangeText?: (param?: any) => void;
+  value?: string | undefined;
 }
 
-export const UserInput: React.FC<UserInputProps> = ({title, placeholder, email, secure, children, }) => {
+export const UserInput: React.FC<UserInputProps> = ({title, placeholder, email, secure, onBlur, value, onChangeText, children, }) => {
   const [showPw, setshowPw] = useState(secure)
   return (
     <View style={tw`mt-6`}>
@@ -23,6 +26,9 @@ export const UserInput: React.FC<UserInputProps> = ({title, placeholder, email, 
           secureTextEntry={showPw}
           placeholder={placeholder}
           keyboardType={email ? 'email-address' : 'default'}
+          onBlur={onBlur}
+          onChangeText={onChangeText}
+          value={value}
         />
         {secure && 
           <TouchableOpacity onPress={() => setshowPw(!showPw)}>
