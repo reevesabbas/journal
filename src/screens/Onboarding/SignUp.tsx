@@ -24,7 +24,11 @@ const SignUp = ({}) => {
   const { control, handleSubmit, formState: {errors}} = useForm<Inputs>()
   const navigation = useNavigation<SignUpNavigationProp>();
 
-  const onSubmit = handleSubmit(() => {})
+  const onSubmit = handleSubmit(async (data) => {
+    if (data.password === data.confirmPassword) {
+      
+    }
+  })
 
   return (
     <Screen style={tw`flex-1`} avoidKeyboard={true}>

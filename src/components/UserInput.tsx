@@ -18,7 +18,7 @@ interface UserInputProps {
 export const UserInput: React.FC<UserInputProps> = ({title, placeholder, email, secure, onBlur, value, onChangeText, children, }) => {
   const [showPw, setshowPw] = useState(secure)
   return (
-    <View style={tw`mt-6`}>
+    <View style={tw`mt-5`}>
       <Text style={tw`text-lavenderBlue font-medium text-base`}> {title} </Text>
       <View style={tw`bg-gray rounded-md flex-row items-center`}>
         <TextInput 
