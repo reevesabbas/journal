@@ -16,7 +16,7 @@ export type StackParams = {
 const Stack = createNativeStackNavigator<StackParams>();
 
 export const NavigatorStack = ({}) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
 
     return (
       <NavigationContainer>        
