@@ -13,6 +13,7 @@
     "react-dom": "18.0.0",
     "react-hook-form": "^7.35.0",
     "react-native": "0.69.5",
+    "react-native-draggable-view": "^0.0.6",
     "react-native-safe-area-context": "4.3.1",
     "react-native-screens": "~3.15.0",
     "react-native-vector-icons": "^9.2.0",
@@ -60,6 +61,34 @@
     ],
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)"
+    ]
+  },
+  "babel": {
+    "plugins": [
+      "babel-plugin-transform-typescript-metadata",
+      [
+        "@babel/plugin-proposal-decorators",
+        {
+          "legacy": true
+        }
+      ],
+      [
+        "@babel/plugin-proposal-class-properties",
+        {
+          "loose": true
+        }
+      ]
+    ],
+    "presets": [
+      [
+        "babel-preset-expo",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ],
+      "@babel/preset-typescript"
     ]
   },
   "version": "1.0.0",
