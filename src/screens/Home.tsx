@@ -4,7 +4,6 @@ import React from 'react'
 import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { StackParams } from '.';
-import Drawer from 'react-native-draggable-view'
 
 import tw from '../../tailwind';
 import { Entry } from '../components/Entry';
