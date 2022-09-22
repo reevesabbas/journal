@@ -3,12 +3,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useState } from 'react'
 
 import { Home } from './Home';
+import { EntryView } from './EntryView';
 import OnboardingStack from './Onboarding';
 
 export type StackParams = {
   HOME: undefined;
   CREATE: undefined;
-  ENTRY: {title: string, body: string};
+  ENTRY: {title: string, body: string, date: string};
   SIGNIN: undefined;
   SIGNUP: undefined;
 }
@@ -22,7 +23,8 @@ export const NavigatorStack = ({}) => {
       <NavigationContainer>        
         { loggedIn ?
           <Stack.Navigator screenOptions={{headerShown: false}}>
-            <Stack.Screen name={'HOME'} component={Home} />
+            <Stack.Screen name='HOME' component={Home} />
+            <Stack.Screen name='ENTRY' component={EntryView} />
           </Stack.Navigator>
           :
           <OnboardingStack /> 
