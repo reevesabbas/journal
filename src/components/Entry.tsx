@@ -9,12 +9,13 @@ interface EntryProps {
   body: string,
   date?: string,
   onPress?: (param?: any) => void;
+  optionsOnPress?: (param?: any) => void;
 }
 
-export const Entry: React.FC<EntryProps> = ({title, body, date, onPress}) => {
+export const Entry: React.FC<EntryProps> = ({title, body, date, onPress, optionsOnPress}) => {
   return (
     <View style={tw`w-full mb-3`}>
-      <Text style={tw`h5 text-lavenderBlue text-right pb-0.5`}> 
+      <Text style={tw`h5 text-lavenderBlue text-right pb-0.5 mr-2`}> 
         {date} 
       </Text>
       <TouchableOpacity 
@@ -27,11 +28,7 @@ export const Entry: React.FC<EntryProps> = ({title, body, date, onPress}) => {
           </Text>
           <TouchableOpacity 
             style={tw`p-2`}
-            onPress={() => {
-              return (
-                <View></View>
-              )
-            }}
+            onPress={optionsOnPress}
           >
             <Icon 
               name='options'
