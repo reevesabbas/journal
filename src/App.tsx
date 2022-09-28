@@ -1,14 +1,15 @@
 import "reflect-metadata";
 import { StyleSheet, Text, View } from 'react-native';
+import { registerRootComponent } from "expo";
 import { useEffect } from "react";
+import { useDeviceContext } from "twrnc";
 
 import { AppDataSource } from "./typeorm/data-source";
 import { Home } from "./screens/Home";
 import { NavigatorStack } from "./screens";
-import { useDeviceContext } from "twrnc";
 import tw from "../tailwind";
 
-export default function App() {
+function App() {
   useDeviceContext(tw)
 
   return (
@@ -17,3 +18,5 @@ export default function App() {
     </View>
   );
 }
+
+export default registerRootComponent(App);
