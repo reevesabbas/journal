@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import tw from '../../tailwind';
+import { EntryOptions } from './EntryOptions';
 
 interface EntryProps {
   title: string,
@@ -17,14 +18,21 @@ export const Entry: React.FC<EntryProps> = ({title, body, date, onPress}) => {
         {date} 
       </Text>
       <TouchableOpacity 
-        style={tw`bg-gray h-31 p-3 rounded-md overflow-hidden`}
+        style={tw`bg-gray h-31 p-2 pl-3 rounded-md overflow-hidden`}
         onPress={onPress}
       >
-        <View style={tw`flex-row justify-between h-8`}>
-          <Text style={tw`h4`}>
+        <View style={tw`flex-row justify-between`}>
+          <Text style={tw`h4 -mt-1`}>
             {title}
           </Text>
-          <TouchableOpacity style={tw`p-2`}>
+          <TouchableOpacity 
+            style={tw`p-2`}
+            onPress={() => {
+              return (
+                <View></View>
+              )
+            }}
+          >
             <Icon 
               name='options'
               size={17}
