@@ -28,15 +28,19 @@ export const CreateEntry = ({navigation, route}: CreateEntryProps) => {
   })
 
   const onSubmit = useCallback(async(data: FormData) => {
-    if (!route.params) {
+    if (!route.params.edit) {
       const newEntry = new Entry();
       newEntry.title = data.title;
       newEntry.body = data.body;
       newEntry.pinned = false;
-      await newEntry.save();
+      await newEntry.save()
+        .then(() => console.log('Entry inserted, ID: ' + newEntry.id))
+          .catch((e) => console.log('Error creating entry: ' + e))
     } else {
-      await AppDataSource.manager.update(Entry, route.params.id, {...data});
-    }
+        await AppDataSource.manager.update(Entry, route.params.id, {...data})
+          .then(() => console.log('Entry with Id ' + route.params.id + ' updated successfully.'))
+            .catch((e) => console.log('Error updating entry: ' + e))
+      }
     navigation.goBack();
   }, [])
 

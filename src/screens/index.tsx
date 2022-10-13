@@ -14,7 +14,7 @@ LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']
 
 export type StackParams = {
   HOME: undefined;
-  CREATE: {id?: number, title?: string, body?: string};
+  CREATE: {id?: number, title?: string, body?: string, edit: boolean};
   ENTRY: Entry;
   SIGNIN: undefined;
   SIGNUP: undefined;

@@ -23,9 +23,8 @@ export type HomeNavigationProp = NativeStackNavigationProp<StackParams, 'HOME'>
 
 export const Home = ({navigation, route}: HomeProps) => {
   const [entries, setEntries] = useState<Entry[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [entry, setEntry] = useState<Entry>();
-  const [optionsOpen, setOptionsOpen] = useState(-1);
+  const [isLoading, setIsLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
 
   const bottomSheetRef = useRef<BottomSheet>(null)
@@ -40,8 +39,8 @@ export const Home = ({navigation, route}: HomeProps) => {
   const getEntries = useCallback(async () => {
     try {
       const entryRepo = AppDataSource.getRepository(Entry);
-      console.log('getting entries')
       let entries = await entryRepo.find();
+      console.log('Entries updated.')
       setEntries(entries.reverse());
       setIsLoading(false);
     } catch (err) {
@@ -119,7 +118,7 @@ export const Home = ({navigation, route}: HomeProps) => {
         <View style={tw`absolute w-20 h-20 z-1 bottom-10 right-5`}>
           <TouchableOpacity 
             style={tw`rounded-full bg-lavenderBlue flex-1 items-center justify-center`}
-            onPress={() => {navigation.navigate('CREATE', {})}}
+            onPress={() => {navigation.navigate('CREATE', {edit: false})}}
           >
             <Icon 
               name='add'
@@ -179,7 +178,7 @@ export const Home = ({navigation, route}: HomeProps) => {
               icon={'note-edit'}
               title={'Edit'}
               onPress={() => {
-                navigation.navigate('CREATE', {...entry})
+                navigation.navigate('CREATE', {...entry, edit: true})
                 bottomSheetRef.current?.close();
               }
               }
