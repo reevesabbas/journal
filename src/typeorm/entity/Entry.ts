@@ -1,5 +1,5 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import {User} from './index'
+import { BaseEntity, BeforeInsert, Column, CreateDateColumn, Entity, Index, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { User } from './index'
 
 @Entity('entry')
 export class Entry extends BaseEntity {
@@ -13,6 +13,16 @@ export class Entry extends BaseEntity {
   body!: string;
 
   @CreateDateColumn()
-  date?: Date;
+  date!: Date;
+
+  @Column()
+  pinned?: boolean;
+
+  @Index()
+  @UpdateDateColumn()
+  updatedDate?: Date;
+
+  @ManyToOne(() => User, (user) => user.entries)
+  user!: User;
 
 }

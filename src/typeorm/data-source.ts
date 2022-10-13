@@ -1,13 +1,14 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
 
-import { User } from "./entity/User"
+import { User, Entry } from "./entity"
+
 
 export const AppDataSource = new DataSource({
   database: 'mydb',
   driver: require('expo-sqlite'),
   type: 'expo',
-  entities: [User],
+  entities: [User, Entry],
   synchronize: true,
 })
 

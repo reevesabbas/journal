@@ -1,4 +1,2 @@
-import { Entry } from "./Entry";
-import { User } from "./User";
-
-export {User, Entry}
+export * from './User'
+export * from './Entry'
