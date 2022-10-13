@@ -14,7 +14,7 @@ interface BigOptionButtonProps {
 export const BigOptionButton: React.FC<BigOptionButtonProps> = ({icon, title, color, onPress}) => {
   return (
     <TouchableOpacity 
-      style={tw`w-29 h-23 items-center justify-center rounded-lg bg-[#191C27] mx-2`}
+      style={tw`w-31 h-25 items-center justify-center rounded-lg bg-[#1C1E28] mx-2`}
       onPress={onPress}
     >
       <Icon 
@@ -24,7 +24,7 @@ export const BigOptionButton: React.FC<BigOptionButtonProps> = ({icon, title, co
         style={tw`opacity-55`}
       />
       {title && 
-        <Text style={tw`text-${color} text-sm pt-1 opacity-55`}> {title} </Text>}
+        <Text style={tw`text-${color} font-bold text-sm pt-1 opacity-55`}> {title} </Text>}
     </TouchableOpacity>
   );
 }
