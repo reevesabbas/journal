@@ -14,6 +14,7 @@ module.exports = {
         'lightGray': '#323643',
         'purple': '#1A1E2C',
         'lavenderBlue': '#6067FF',
+        'lightPink': '#FDEAFF',
         'white': '#FFF',
         'red': '#d90000',
       },
@@ -31,7 +32,7 @@ module.exports = {
         'h3': `tracking-0.1 font-medium text-2xl text-white`,
         'h4': `leading-loose font-medium text-xl text-white`,
         'h5': `font-medium text-lg`,
-        'p': `font-medium text-base text-white`,
+        'p': `font-medium text-[17px] text-white`,
         'p2': `text-base text-white`
       })
     }))
