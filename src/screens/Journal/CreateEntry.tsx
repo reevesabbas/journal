@@ -4,12 +4,13 @@ import { Controller, useForm } from 'react-hook-form';
 import { Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/AntDesign';
+import { ErrorMessage } from '@hookform/error-message';
 
 import { StackParams } from '.';
-import tw from '../../tailwind';
-import Screen from '../components/Screen';
-import { AppDataSource } from '../typeorm/data-source';
-import { Entry } from '../typeorm/entity';
+import tw from '../../../tailwind';
+import Screen from '../../components/Screen';
+import { AppDataSource } from '../../typeorm/data-source';
+import { Entry } from '../../typeorm/entity';
 
 export type CreateEntryProps = NativeStackScreenProps<StackParams, 'CREATE'>
 export type CreateEntryNavigationProp = NativeStackNavigationProp<StackParams, 'CREATE'>
@@ -20,15 +21,16 @@ type FormData = {
 }
 
 export const CreateEntry = ({navigation, route}: CreateEntryProps) => {
-  const { control, handleSubmit } = useForm<FormData>({
+  const entry = route.params.entry;
+  const { control, handleSubmit, formState: {errors} } = useForm<FormData>({
     defaultValues: {
-      title: route.params.title ? route.params.title : '',
-      body: route.params.body ? route.params.body : '',
+      title: entry ? entry.title : '',
+      body: entry ? entry.body : '',
     }
   })
 
   const onSubmit = useCallback(async(data: FormData) => {
-    if (!route.params.edit) {
+    if (!entry) {
       const newEntry = new Entry();
       newEntry.title = data.title;
       newEntry.body = data.body;
@@ -37,8 +39,8 @@ export const CreateEntry = ({navigation, route}: CreateEntryProps) => {
         .then(() => console.log('Entry inserted, ID: ' + newEntry.id))
           .catch((e) => console.log('Error creating entry: ' + e))
     } else {
-        await AppDataSource.manager.update(Entry, route.params.id, {...data})
-          .then(() => console.log('Entry with Id ' + route.params.id + ' updated successfully.'))
+        await AppDataSource.manager.update(Entry, entry.id, {...data})
+          .then(() => console.log('Entry with Id ' + entry.id + ' updated successfully.'))
             .catch((e) => console.log('Error updating entry: ' + e))
       }
     navigation.goBack();
@@ -70,6 +72,7 @@ export const CreateEntry = ({navigation, route}: CreateEntryProps) => {
               )}
               name="title"
             />
+            {errors.title && <Text style={tw`p text-red`}>Field required.</Text>}
           </View>
           <View style={tw`mt-5`}>
             <Text style={tw`h3 pb-1 text-lavenderBlue`}>Body</Text>
