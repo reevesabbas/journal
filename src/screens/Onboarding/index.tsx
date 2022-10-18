@@ -1,18 +1,20 @@
-import React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react'
+import { Onboarding } from './Onboarding';
 
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
-
-const AuthStack = createNativeStackNavigator();
-
-const OnboardingStack = () => {
-  return (
-    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
-      <AuthStack.Screen name={'SIGNUP'} component={SignUp} />
-      <AuthStack.Screen name={'SIGNIN'} component={SignIn} />
-    </AuthStack.Navigator>
-  )
+export type OnboardingScreensParams = {
+  WelcomeScreen: undefined;
 }
 
-export default OnboardingStack
+const OnboardingSceen = createNativeStackNavigator<OnboardingScreensParams>();
+
+export const OnboardingScreens = ({}) => {
+    return (
+      <NavigationContainer>
+        <OnboardingSceen.Navigator screenOptions={{headerShown: false}}>
+          <OnboardingSceen.Screen name='WelcomeScreen' component={Onboarding} />
+        </OnboardingSceen.Navigator>
+      </NavigationContainer>
+    );
+}
