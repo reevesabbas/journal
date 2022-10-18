@@ -6,14 +6,8 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id?: number;
 
-  @Column({unique: true})
-  email!: string;
-
   @Column()
   username!: string;
-
-  @Column()
-  password!: string;
 
   @OneToMany(() => Entry, (entry) => entry.user)
   entries!: Entry[];
