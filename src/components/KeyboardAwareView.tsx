@@ -9,22 +9,21 @@ interface KeyboardAwareViewProps {
 }
 
 const KeyboardAwareView: React.FC<KeyboardAwareViewProps> = ({ style, children, ...rest}) => {
-
-    return (
-      <KeyboardAvoidingView
-        style={tw`flex-1` && style}
-        {...rest}
-        behavior={Platform.select({ios: 'padding'})}
+  return (
+    <KeyboardAvoidingView
+      style={tw`flex-1` && style}
+      {...rest}
+      behavior={Platform.select({ios: 'padding'})}
+    >
+      <ScrollView 
+        style={tw`flex-1`} 
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={tw`grow`}
       >
-        <ScrollView 
-          style={tw`flex-1`} 
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={tw`grow`}
-        >
-          {children}
-        </ScrollView>
-      </KeyboardAvoidingView>
-    );
+        {children}
+      </ScrollView>
+    </KeyboardAvoidingView>
+  );
 }
 
 export default KeyboardAwareView
