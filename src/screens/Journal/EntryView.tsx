@@ -5,8 +5,8 @@ import { TouchableOpacity, View, Text, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import { StackParams } from '.';
-import tw from '../../tailwind';
-import Screen from '../components/Screen';
+import tw from '../../../tailwind';
+import Screen from '../../components/Screen';
 
 export type EntryViewProps = NativeStackScreenProps<StackParams, 'ENTRY'>
 export type EntryViewNavigationProp = NativeStackNavigationProp<StackParams, 'ENTRY'>
