@@ -1,9 +1,13 @@
 import React, { FC } from 'react'
 import { SvgProps } from 'react-native-svg'
+
 import WomanJournaling from '../../assets/images/WomanJournaling.svg'
+import WomanLooking from '../../assets/images/WomanLooking.svg'
+import ManWinning from '../../assets/images/ManWinning.svg'
+import { TextInput } from 'react-native'
 
 export interface ISlideInfo {
-  id: string,
+  id: number,
   title: string,
   description: string,
   image: FC<SvgProps>,
@@ -11,15 +15,21 @@ export interface ISlideInfo {
 
 export const SLIDES: ISlideInfo[] = [
   {
-    id: '1',
+    id: 1,
     title: 'Welcome to Journal!',
-    description: 'Bunch of text here about why this app is cool. Bunch of text here about why this app is cool. Bunch of text here about why this app is cool.',
+    description: 'A simple journaling app made with React Native, Expo & Tailwind CSS.',
     image: WomanJournaling,
   },
   {
-    id: '2',
-    title: 'Enter your name.',
-    description: 'Bunch of text here about why this app is cool. Bunch of text here about why this app is cool. Bunch of text here about why this app is cool.',
-    image: WomanJournaling,
+    id: 2,
+    title: 'What is your name?',
+    description: 'You can change this later.',
+    image: WomanLooking,
+  },
+  {
+    id: 3,
+    title: 'Get started!',
+    description: '',
+    image: ManWinning,
   },
 ]

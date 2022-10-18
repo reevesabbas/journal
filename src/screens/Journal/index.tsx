@@ -7,6 +7,7 @@ import { Home } from './Home';
 import { EntryView } from './EntryView';
 import { CreateEntry } from './CreateEntry';
 import { Entry, User } from '../../typeorm/entity';
+import { Onboarding } from '../Onboarding/Onboarding';
 
 LogBox.ignoreLogs(['Non-serializable values were found in the navigation state'])
 
