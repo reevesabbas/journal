@@ -19,6 +19,7 @@ const KeyboardAwareView: React.FC<KeyboardAwareViewProps> = ({ style, children, 
         style={tw`flex-1`} 
         showsVerticalScrollIndicator={false}
         contentContainerStyle={tw`grow`}
+        bounces={false}
       >
         {children}
       </ScrollView>
