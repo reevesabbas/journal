@@ -6,12 +6,12 @@ import BottomSheet, { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { DataSource } from 'typeorm';
 
 import { StackParams } from '.';
-import tw from '../../tailwind';
-import Screen from '../components/Screen'
-import { Entry } from '../typeorm/entity';
-import { AppDataSource } from '../typeorm/data-source';
-import { EntryListItem } from '../components/EntryListItem';
-import { BigOptionButton } from '../components/BigOptionButton';
+import tw from '../../../tailwind';
+import Screen from '../../components/Screen'
+import { Entry } from '../../typeorm/entity';
+import { AppDataSource } from '../../typeorm/data-source';
+import { EntryListItem } from '../../components/EntryListItem';
+import { BigOptionButton } from '../../components/BigOptionButton';
 import { useFocusEffect } from '@react-navigation/native';
 
 const wait = (timeout: number) => {
@@ -26,6 +26,7 @@ export const Home = ({navigation, route}: HomeProps) => {
   const [entry, setEntry] = useState<Entry>();
   const [isLoading, setIsLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
+  const [searchPhrase, setSearchPhrase] = useState('');
 
   const bottomSheetRef = useRef<BottomSheet>(null)
   const snapPoints = useMemo(() => ['55%'], []);
@@ -73,21 +74,16 @@ export const Home = ({navigation, route}: HomeProps) => {
     navigation.navigate('ENTRY', entry)
   }, [])
 
-  useEffect(() => {
-    getEntries();
-  }, [])
-
   useFocusEffect(useCallback(() => {
     bottomSheetRef.current?.close();
     getEntries();
-    return () => setIsLoading(true)
   }, []))
 
   return (
     <>
-      <Screen style={tw`content-container`}>
+      <Screen style={tw`flex-1`}>
         {/** Home Header */}
-        <View style={tw`items-start mt-5`}>
+        <View style={tw`items-start mt-5 mx-3`}>
           <Text style={tw`h1`}>Reeves' Journal</Text>
           <Text style={tw`h4 text-lavenderBlue pt-1`}>{entries.length} Entries</Text>
           <View style={tw`flex-row w-full justify-between pt-3`}>
@@ -101,6 +97,7 @@ export const Home = ({navigation, route}: HomeProps) => {
               <TextInput 
                 style={tw`flex-1 h-10 pb-1 text-base text-white`}
                 placeholder='Search'
+                value={searchPhrase}
               />
             </View>
             <TouchableOpacity 
@@ -115,10 +112,10 @@ export const Home = ({navigation, route}: HomeProps) => {
           </View>
         </View>
         {/** Create Entry Button */}
-        <View style={tw`absolute w-20 h-20 z-1 bottom-10 right-5`}>
+        <View style={tw`absolute w-20 h-20 z-1 bottom-10 right-3`}>
           <TouchableOpacity 
             style={tw`rounded-full bg-lavenderBlue flex-1 items-center justify-center`}
-            onPress={() => {navigation.navigate('CREATE', {edit: false})}}
+            onPress={() => {navigation.navigate('CREATE', {})}}
           >
             <Icon 
               name='add'
@@ -134,7 +131,7 @@ export const Home = ({navigation, route}: HomeProps) => {
           </View>
         :
         <ScrollView 
-          style={tw`flex-1 my-5 -ml-3`}
+          style={tw`flex-1 my-5`}
           refreshControl={
             <RefreshControl
               refreshing={refresh}
@@ -178,7 +175,7 @@ export const Home = ({navigation, route}: HomeProps) => {
               icon={'note-edit'}
               title={'Edit'}
               onPress={() => {
-                navigation.navigate('CREATE', {...entry, edit: true})
+                navigation.navigate('CREATE', {entry})
                 bottomSheetRef.current?.close();
               }
               }
@@ -192,9 +189,7 @@ export const Home = ({navigation, route}: HomeProps) => {
                   "Delete Entry",
                   "This action is irreversable!",
                   [
-                    {
-                      text: 'Cancel'
-                    },
+                    { text: 'Cancel' },
                     {
                       text: 'Yes',
                       onPress: () => {deleteEntry(entry?.id)}
