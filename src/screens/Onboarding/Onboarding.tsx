@@ -13,23 +13,22 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import tw from '../../../tailwind';
-import { OnboardingScreensParams } from '.';
 import Screen from '../../components/Screen';
 import {SLIDES} from './slides';
-import { UserContext } from '../../UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StackParams } from '..';
 
-export type WelcomeScreenProps = NativeStackScreenProps<OnboardingScreensParams, 'WelcomeScreen'>
-export type WelcomeScreenNavigationProp = NativeStackNavigationProp<OnboardingScreensParams, 'WelcomeScreen'>
+export type OnboardScreenProps = NativeStackScreenProps<StackParams, 'ONBOARD'>
+export type OnboardScreenNavigationProp = NativeStackNavigationProp<StackParams, 'ONBOARD'>
 
 
-export const Onboarding = ({navigation}: WelcomeScreenProps) => {
+export const Onboarding = ({navigation}: OnboardScreenProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [userInput, setUserInput] = useState('');
   const { width } = useWindowDimensions();
   const slidesRef = useRef<FlatList>(null);
-  const {setUser} = useContext(UserContext)
-
   const scrollX = useRef(new Animated.Value(0)).current;
+
 
   const viewableItemsChanged = useCallback((info: {viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) => {
     const index = info.viewableItems[0].index;
@@ -43,13 +42,19 @@ export const Onboarding = ({navigation}: WelcomeScreenProps) => {
 
   const nextOnPress = async () => {
     if (currentIndex < SLIDES.length - 1 && slidesRef.current) {
+      console.log('username: ' + userInput);
       slidesRef.current?.scrollToIndex({index: currentIndex+1})
     } else {
-      try {
-        await AsyncStorage.setItem('@viewedOnboarding', 'yes');
-      } catch (e) {
-        console.log('Error setting viewedOnboarding: ' + e);
-      }
+      exitOnboarding();
+    }
+  }
+
+  const exitOnboarding = async () => {
+    try {
+      await AsyncStorage.setItem('@viewedOnboarding', 'true');
+      navigation.replace('HOME', {username: userInput});
+    } catch (err) {
+      console.log('Error exiting onboarding: ' + err);
     }
   }
 
@@ -67,7 +72,9 @@ export const Onboarding = ({navigation}: WelcomeScreenProps) => {
                 {item.id === 2 && 
                   <TextInput 
                     style={tw`w-60 h-12 mt-5 bg-gray p-2 rounded-lg text-lightPink text-base`}
-                    placeholder='Username'
+                    placeholder='Name'
+                    value={userInput}
+                    onChangeText={t => setUserInput(t)}
                   />
                 }
                 <Text style={tw`p mt-5 mx-3 text-center text-lightPink leading-loose`}>{item.description}</Text>
@@ -109,18 +116,18 @@ export const Onboarding = ({navigation}: WelcomeScreenProps) => {
           )
         })}
       </View>
-      <View style={tw`flex-row justify-between mt-5`}>
+      <View style={tw`flex-row justify-between my-3`}>
         <TouchableOpacity 
           style={tw`p-2 ml-2`}
-          onPress={() => {setUser('')}}  
+          onPress={() => {exitOnboarding()}}  
         >
           <Text style={tw`h4`}>Skip</Text>
         </TouchableOpacity>
         <TouchableOpacity 
-          style={tw`flex-row items-center justify-center p-2 ml-2`}
+          style={tw`flex-row items-center justify-center p-3`}
           onPress={() => {nextOnPress()}}  
         >
-          <Text style={tw`h4`}>Next</Text>
+          <Text style={tw`h4`}>{currentIndex === SLIDES.length - 1 ? 'Go' : 'Next'}</Text>
           <Icon 
             name='arrow-forward-ios'
             size={23}

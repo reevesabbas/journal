@@ -3,29 +3,37 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useContext, useMemo, useState } from 'react'
 import { LogBox } from 'react-native';
 
-import { Home } from './Home';
+import { HomeScreen } from './HomeScreen';
 import { EntryView } from './EntryView';
 import { CreateEntry } from './CreateEntry';
-import { Entry, User } from '../../typeorm/entity';
-import { Onboarding } from '../Onboarding/Onboarding';
-
-LogBox.ignoreLogs(['Non-serializable values were found in the navigation state'])
+import { Entry } from '../typeorm/entity';
+import { Onboarding } from './Onboarding/Onboarding';
 
 export type StackParams = {
-  HOME: undefined;
+  HOME: {username?: string};
   CREATE: {entry?: Entry};
   ENTRY: Entry;
   ONBOARD: undefined;
 }
 
 const Stack = createNativeStackNavigator<StackParams>();
-export const NavigatorStack = ({}) => {
+
+type NavigatorStackProps = {
+
+}
+
+export const NavigatorStack = ({}: NavigatorStackProps) => {
     return (
       <NavigationContainer>        
         <Stack.Navigator screenOptions={{headerShown: false}}>
-          <Stack.Screen name='HOME' component={Home} />
-          <Stack.Screen name='ENTRY' component={EntryView} />
-          <Stack.Screen name='CREATE' component={CreateEntry} />
+            <Stack.Group>
+              <Stack.Screen name='ONBOARD' component={Onboarding} />
+            </Stack.Group>
+            <Stack.Group>
+              <Stack.Screen name='HOME' component={HomeScreen} />
+              <Stack.Screen name='ENTRY' component={EntryView} />
+              <Stack.Screen name='CREATE' component={CreateEntry} />
+            </Stack.Group>
         </Stack.Navigator>
       </NavigationContainer>
     );
