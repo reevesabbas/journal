@@ -1,16 +1,15 @@
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useCallback } from 'react'
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { ErrorMessage } from '@hookform/error-message';
 
+import tw from '../../tailwind';
 import { StackParams } from '.';
-import tw from '../../../tailwind';
-import Screen from '../../components/Screen';
-import { AppDataSource } from '../../typeorm/data-source';
-import { Entry } from '../../typeorm/entity';
+import Screen from '../components/Screen';
+import { AppDataSource } from '../typeorm/data-source';
+import { Entry } from '../typeorm/entity';
 
 export type CreateEntryProps = NativeStackScreenProps<StackParams, 'CREATE'>
 export type CreateEntryNavigationProp = NativeStackNavigationProp<StackParams, 'CREATE'>
@@ -20,6 +19,11 @@ type FormData = {
   body: string
 }
 
+/**
+ * @param navigation - Navigation prop used to go back to Home screen.  
+ * @param route -  Route prop used to accept Entry as a param, to update rather than create a new one.
+ * @returns - Screen that handles creating a new entry or updating an existing one, then saving to the database and returning to home screen.
+ */
 export const CreateEntry = ({navigation, route}: CreateEntryProps) => {
   const entry = route.params.entry;
   const { control, handleSubmit, formState: {errors} } = useForm<FormData>({
@@ -29,20 +33,22 @@ export const CreateEntry = ({navigation, route}: CreateEntryProps) => {
     }
   })
 
+
   const onSubmit = useCallback(async(data: FormData) => {
-    if (!entry) {
-      const newEntry = new Entry();
-      newEntry.title = data.title;
-      newEntry.body = data.body;
-      newEntry.pinned = false;
-      await newEntry.save()
-        .then(() => console.log('Entry inserted, ID: ' + newEntry.id))
-          .catch((e) => console.log('Error creating entry: ' + e))
-    } else {
-        await AppDataSource.manager.update(Entry, entry.id, {...data})
-          .then(() => console.log('Entry with Id ' + entry.id + ' updated successfully.'))
-            .catch((e) => console.log('Error updating entry: ' + e))
+    try {
+      if (!entry) {
+        const newEntry = new Entry();
+        newEntry.title = data.title;
+        newEntry.body = data.body;
+        newEntry.pinned = false;
+        await newEntry.save()
+      } else {
+        const updatedEntry = await AppDataSource.manager.update(Entry, entry.id, {...data});
+        console.log('Entry updated: ' + updatedEntry)
       }
+    } catch(err) {
+      console.log('Error submitting entry: ' + err)
+    }
     navigation.goBack();
   }, [])
 

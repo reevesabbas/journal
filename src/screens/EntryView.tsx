@@ -5,12 +5,17 @@ import { TouchableOpacity, View, Text, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import { StackParams } from '.';
-import tw from '../../../tailwind';
-import Screen from '../../components/Screen';
+import tw from '../../tailwind';
+import Screen from '../components/Screen';
 
 export type EntryViewProps = NativeStackScreenProps<StackParams, 'ENTRY'>
 export type EntryViewNavigationProp = NativeStackNavigationProp<StackParams, 'ENTRY'>
 
+/**
+ * @param navigation - Navigation prop used to go back to Home screen.  
+ * @param route -  Route prop used to accept Entry info as param, to display entirely on screen.
+ * @returns - Screen that displays the entry pressed on in Home, with option to close and return to Home.
+ */
 export const EntryView = ({navigation, route}: EntryViewProps) => {
   const params = route.params;
 
