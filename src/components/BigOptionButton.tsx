@@ -14,7 +14,7 @@ interface BigOptionButtonProps {
 export const BigOptionButton: React.FC<BigOptionButtonProps> = ({icon, title, color, onPress}) => {
   return (
     <TouchableOpacity 
-      style={tw`w-31 h-25 items-center justify-center rounded-lg bg-[#1C1E28] mx-2`}
+      style={tw`w-31 h-25 items-center justify-center rounded-lg bg-[#18181d] mx-2`}
       onPress={onPress}
     >
       <Icon 
