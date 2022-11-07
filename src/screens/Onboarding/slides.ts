@@ -3,7 +3,7 @@ import { SvgProps } from 'react-native-svg'
 
 import WomanJournaling from '../../assets/images/WomanJournaling.svg'
 import WomanLooking from '../../assets/images/WomanLooking.svg'
-import ManWinning from '../../assets/images/ManWinning.svg'
+import BoysPushing from '../../assets/images/BoysPushing.svg'
 import { TextInput } from 'react-native'
 
 export interface ISlideInfo {
@@ -29,7 +29,7 @@ export const SLIDES: ISlideInfo[] = [
   {
     id: 3,
     title: 'Get started!',
-    description: '',
-    image: ManWinning,
+    description: 'Start Journaling your exciting days, and even boring ones.',
+    image: BoysPushing,
   },
 ]
