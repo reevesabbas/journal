@@ -4,7 +4,7 @@ import React from 'react'
 import { TouchableOpacity, View, Text, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 
-import { StackParams } from '.';
+import { StackParams } from '../App';
 import tw from '../../tailwind';
 import Screen from '../components/Screen';
 
