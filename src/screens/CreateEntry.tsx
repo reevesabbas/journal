@@ -6,10 +6,10 @@ import { TextInput } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import tw from '../../tailwind';
-import { StackParams } from '.';
+import { StackParams } from '../App';
 import Screen from '../components/Screen';
 import { AppDataSource } from '../typeorm/data-source';
-import { Entry } from '../typeorm/entity';
+import { Entry, User } from '../typeorm/entity';
 
 export type CreateEntryProps = NativeStackScreenProps<StackParams, 'CREATE'>
 export type CreateEntryNavigationProp = NativeStackNavigationProp<StackParams, 'CREATE'>
@@ -26,6 +26,7 @@ type FormData = {
  */
 export const CreateEntry = ({navigation, route}: CreateEntryProps) => {
   const entry = route.params.entry;
+  const user = route.params.user;
   const { control, handleSubmit, formState: {errors} } = useForm<FormData>({
     defaultValues: {
       title: entry ? entry.title : '',
@@ -33,15 +34,16 @@ export const CreateEntry = ({navigation, route}: CreateEntryProps) => {
     }
   })
 
-
   const onSubmit = useCallback(async(data: FormData) => {
     try {
       if (!entry) {
         const newEntry = new Entry();
-        newEntry.title = data.title;
+        //TODO- make entity do this automatically?
+        newEntry.title = data.title || `Entry #${user.entries!.length + 1}`;
         newEntry.body = data.body;
         newEntry.pinned = false;
-        await newEntry.save()
+        newEntry.user = user;
+        await AppDataSource.manager.save(newEntry)
       } else {
         const updatedEntry = await AppDataSource.manager.update(Entry, entry.id, {...data});
         console.log('Entry updated: ' + updatedEntry)
@@ -54,14 +56,19 @@ export const CreateEntry = ({navigation, route}: CreateEntryProps) => {
 
     return (
       <Screen style={tw`content-container`} avoidKeyboard={true}>
-        <View style={tw`flex-row justify-end mt-5`}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon 
-              name='close'
-              size={45}
-              color='#FFF'
-            />
-          </TouchableOpacity>
+        <View style={tw`flex-row items-center mt-5 my-2`}>
+          <View style={tw`justify-center mx-auto`}>
+            <Text style={tw`-mr-10 h3`}>{entry ? 'Edit Entry' : 'Create Entry'}</Text>
+          </View>
+          <View style={tw`self-end`}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Icon 
+                name='close'
+                size={45}
+                color='#FFF'
+              />
+            </TouchableOpacity>
+          </View>
         </View>
         <View style={tw`flex-1 items-center`}>
           <View style={tw``}>
@@ -74,6 +81,7 @@ export const CreateEntry = ({navigation, route}: CreateEntryProps) => {
                   onChangeText={onChange}
                   style={tw`p-3 bg-gray h-14 rounded-md text-white text-lg w-100`}
                   value={value}
+                  placeholder={`Entry #${user.entries!.length + 1}`}
                 />
               )}
               name="title"
