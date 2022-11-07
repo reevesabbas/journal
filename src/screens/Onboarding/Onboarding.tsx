@@ -1,5 +1,5 @@
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { 
   Animated, 
   FlatList, 
@@ -16,7 +16,9 @@ import tw from '../../../tailwind';
 import Screen from '../../components/Screen';
 import {SLIDES} from './slides';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StackParams } from '..';
+import { StackParams } from '../../App';
+import { AppDataSource } from '../../typeorm/data-source';
+import { User } from '../../typeorm/entity';
 
 export type OnboardScreenProps = NativeStackScreenProps<StackParams, 'ONBOARD'>
 export type OnboardScreenNavigationProp = NativeStackNavigationProp<StackParams, 'ONBOARD'>
@@ -28,7 +30,6 @@ export const Onboarding = ({navigation}: OnboardScreenProps) => {
   const { width } = useWindowDimensions();
   const slidesRef = useRef<FlatList>(null);
   const scrollX = useRef(new Animated.Value(0)).current;
-
 
   const viewableItemsChanged = useCallback((info: {viewableItems: Array<ViewToken>, changed: Array<ViewToken>}) => {
     const index = info.viewableItems[0].index;
@@ -43,7 +44,7 @@ export const Onboarding = ({navigation}: OnboardScreenProps) => {
   const nextOnPress = async () => {
     if (currentIndex < SLIDES.length - 1 && slidesRef.current) {
       console.log('username: ' + userInput);
-      slidesRef.current?.scrollToIndex({index: currentIndex+1})
+      slidesRef.current?.scrollToIndex({index: currentIndex + 1})
     } else {
       exitOnboarding();
     }
@@ -51,15 +52,21 @@ export const Onboarding = ({navigation}: OnboardScreenProps) => {
 
   const exitOnboarding = async () => {
     try {
-      await AsyncStorage.setItem('@viewedOnboarding', 'true');
-      navigation.replace('HOME', {username: userInput});
+      const userRepo = AppDataSource.getRepository(User)
+      const user = await userRepo.create({
+        name: userInput
+      })
+      await userRepo.save(user);
+      console.log('User created: ' + user.id)
+      await AsyncStorage.setItem('userId', `${user.id}`);
+      navigation.replace('HOME');
     } catch (err) {
       console.log('Error exiting onboarding: ' + err);
     }
   }
 
   return (
-    <Screen style={tw`flex-3`} avoidKeyboard={true} >
+    <Screen style={tw`flex-3`} avoidKeyboard={true}>
       <View style={tw`flex-1`}>
         <FlatList
           data={SLIDES}
